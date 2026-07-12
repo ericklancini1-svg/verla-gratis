@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cine Gratis Legal - Películas gratis y legales</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+        background: #0a0a0a;
+        background-image: 
+            radial-gradient(circle at 20% 50%, rgba(120, 0, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(255, 0, 100, 0.08) 0%, transparent 50%);
+        min-height: 100vh;
+    }
+    
+    .card-gradient {
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.8), rgba(20, 20, 25, 0.9));
+        backdrop-filter: blur(10px);
+    }
+    
+    .card-hover {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+    }
+    
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-glow:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .btn-glow:hover:before {
+        left: 100%;
+    }
+    
+    .logo-container {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+    }
+    
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+    
+    .float-animation {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .filter-btn {
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn.active {
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border-color: transparent;
+    }
+
+    .movie-item {
+        transition: all 0.3s ease;
+    }
+
+    .movie-item.hidden {
+        display: none;
+    }
+
+    /* Overlay de entrada */
+    .entry-ad-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .entry-ad-overlay.show {
+        opacity: 1;
+    }
+
+    .entry-ad-overlay.hide {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .entry-ad-container {
+        position: relative;
+        animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes scaleIn {
+        from {
+            transform: scale(0.9);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .entry-ad-box {
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.95), rgba(20, 20, 25, 0.95));
+        border: 2px dashed rgba(139, 92, 246, 0.5);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .entry-ad-close {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+
+    .entry-ad-close:hover {
+        transform: scale(1.1) rotate(90deg);
+        box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+    }
+
+    .entry-ad-close i {
+        color: white;
+        font-size: 14px;
+    }
+
+    /* Espacios publicitarios */
+    .ad-banner-728x90 {
+        width: 100%;
+        max-width: 728px;
+        height: 90px;
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.6), rgba(20, 20, 25, 0.6));
+        border: 2px dashed rgba(139, 92, 246, 0.4);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 0 auto;
+    }
+
+    .ad-banner-300x250 {
+        width: 100%;
+        max-width: 300px;
+        height: 250px;
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.6), rgba(20, 20, 25, 0.6));
+        border: 2px dashed rgba(139, 92, 246, 0.4);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1.5rem;
+    }
+
+    .ad-skyscraper-300x600 {
+        width: 300px;
+        height: 600px;
+        background: linear-gradient(145deg, rgba(30, 30, 35, 0.6), rgba(20, 20, 25, 0.6));
+        border: 2px dashed rgba(139, 92, 246, 0.4);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        position: sticky;
+        top: 100px;
+    }
+
+    @media (max-width: 1024px) {
+        .entry-ad-box {
+            width: 728px;
+            height: 90px;
+        }
+    }
+
+    @media (min-width: 1025px) {
+        .entry-ad-box {
+            width: 970px;
+            height: 250px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .entry-ad-box {
+            width: 100%;
+            max-width: 728px;
+            height: auto;
+            min-height: 90px;
+            padding: 1.5rem 1rem;
+        }
+        .ad-banner-728x90 {
+            height: auto;
+            min-height: 90px;
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 390px) {
+        .entry-ad-box {
+            padding: 1rem 0.75rem;
+        }
+        .entry-ad-close {
+            top: -8px;
+            right: -8px;
+            width: 32px;
+            height: 32px;
+        }
+    }
+</style>
+</head>
+<body class="text-gray-100 antialiased">
+
+    <!-- Overlay Publicitario de Entrada -->
+    <div id="entryAdOverlay" class="entry-ad-overlay hidden">
+        <div class="entry-ad-container">
+            <div class="entry-ad-box">
+                <i class="fas fa-ad text-4xl text-purple-400 opacity-50"></i>
+                <div class="text-center">
+                    <p class="text-lg sm:text-xl font-bold text-gray-200 mb-1">Espacio publicitario de entrada</p>
+                    <p class="text-sm text-gray-400">Tu anuncio aquí</p>
+                </div>
+                <span class="text-xs text-gray-600 uppercase tracking-wider">970x250 / 728x90</span>
+            </div>
+            <button class="entry-ad-close" id="entryAdClose" aria-label="Cerrar publicidad">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Banner 728x90 arriba del header -->
+    <div class="w-full bg-black/40 border-b border-gray-800/50 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="ad-banner-728x90">
+                <i class="fas fa-bullhorn text-2xl text-purple-400 opacity-60"></i>
+                <div class="text-center">
+                    <p class="text-sm font-semibold text-gray-300">Tu anuncio aquí</p>
+                    <span class="text-xs text-gray-500">728x90 Banner</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 border-b border-gray-800/50 backdrop-blur-xl bg-black/40">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="logo-container float-animation">
+                        <i class="fas fa-film text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold hero-gradient">Cine Gratis Legal</h1>
+                        <p class="text-xs text-gray-400 hidden sm:block">Todas tus plataformas en un solo lugar</p>
+                    </div>
+                <a href="#plataformas" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 transition-all">
+                    <i class="fas fa-play-circle"></i>
+                    <span class="text-sm font-medium">Ver catálogo</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenedor principal con sidebar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex gap-8">
+            <!-- Contenido principal -->
+            <div class="flex-1 min-w-0">
+                <!-- Sección En Tendencia Ahora -->
+                <section class="py-12 border-b border-gray-800/50">
+                    <div class="mb-8">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-fire text-2xl text-orange-500"></i>
+                            <h2 class="text-3xl sm:text-4xl font-extrabold">En tendencia ahora</h2>
+                        </div>
+                        <p class="text-gray-400">Lo más visto en julio 2026 en cada plataforma gratis</p>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div class="flex flex-wrap gap-3 mb-8">
+                        <button class="filter-btn active px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="all">
+                            <i class="fas fa-star mr-1.5"></i>Tendencia
+                        </button>
+                        <button class="filter-btn px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="accion">
+                            <i class="fas fa-bomb mr-1.5"></i>Acción
+                        </button>
+                        <button class="filter-btn px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="drama">
+                            <i class="fas fa-masks-theater mr-1.5"></i>Drama
+                        </button>
+                        <button class="filter-btn px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="comedia">
+                            <i class="fas fa-laugh mr-1.5"></i>Comedia
+                        </button>
+                        <button class="filter-btn px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="romance">
+                            <i class="fas fa-heart mr-1.5"></i>Romance
+                        </button>
+                        <button class="filter-btn px-5 py-2.5 rounded-lg bg-gray-800/60 hover:bg-gray-700/60 border border-gray-700/50 text-sm font-medium" data-filter="terror">
+                            <i class="fas fa-ghost mr-1.5"></i>Terror
+                        </button>
+                    </div>
+
+                    <!-- Grid de Tendencias por Plataforma -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <!-- Pluto TV Trending -->
+                        <div class="card-gradient rounded-2xl border border-gray-800/50 p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                                    <i class="fas fa-tv text-xl text-black"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">Pluto TV</h3>
+                                    <p class="text-xs text-gray-500">Más populares esta semana</p>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <a href="https://pluto.tv" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="accion">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-purple-400 w-6">1</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">La Furia De La Montaña</p>
+                                            <p class="text-xs text-gray-500">Acción</p>
+                                        </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://pluto.tv" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="accion">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-purple-400 w-6">2</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Bajo amenaza</p>
+                                            <p class="text-xs text-gray-500">Acción</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://pluto.tv" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="drama">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-purple-400 w-6">3</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Legado</p>
+                                            <p class="text-xs text-gray-500">Drama</p>
+                                        </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://pluto.tv" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="terror">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-purple-400 w-6">4</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">La Noche del Demonio</p>
+                                            <p class="text-xs text-gray-500">Terror</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Tubi Trending -->
+                        <div class="card-gradient rounded-2xl border border-gray-800/50 p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                                    <i class="fas fa-fire text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">Tubi</h3>
+                                    <p class="text-xs text-gray-500">Top 5 del mes</p>
+                                </div>
+                            <div class="space-y-3">
+                                <a href="https://tubitv.com" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="drama romance">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-pink-400 w-6">1</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Call Me by Your Name</p>
+                                            <p class="text-xs text-gray-500">Drama, Romance</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://tubitv.com" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="drama">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-pink-400 w-6">2</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">The Age of Innocence</p>
+                                            <p class="text-xs text-gray-500">Drama</p>
+                                        </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://tubitv.com" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="comedia drama">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-pink-400 w-6">3</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Big Fish</p>
+                                            <p class="text-xs text-gray-500">Comedia, Drama</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://tubitv.com" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="terror">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-pink-400 w-6">4</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Terrifier 2</p>
+                                            <p class="text-xs text-gray-500">Terror</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CINE.AR Play Trending -->
+                        <div class="card-gradient rounded-2xl border border-gray-800/50 p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center">
+                                    <i class="fas fa-star text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">CINE.AR Play</h3>
+                                    <p class="text-xs text-gray-500">Estrenos nacionales</p>
+                                </div>
+                            <div class="space-y-3">
+                                <a href="https://play.cine.ar" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="drama">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-sky-400 w-6">1</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Cuarto oscuro</p>
+                                            <p class="text-xs text-gray-500">2025 • Drama</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://play.cine.ar" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="comedia">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-sky-400 w-6">2</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Relatos Salvajes</p>
+                                            <p class="text-xs text-gray-500">2014 • Comedia</p>
+                                        </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://play.cine.ar" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="drama">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-sky-400 w-6">3</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">El Secreto de Sus Ojos</p>
+                                            <p class="text-xs text-gray-500">2009 • Drama</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://play.cine.ar" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="romance comedia">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-sky-400 w-6">4</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Un Novio para mi Mujer</p>
+                                            <p class="text-xs text-gray-500">2008 • Romance, Comedia</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- YouTube Movies Trending -->
+                        <div class="card-gradient rounded-2xl border border-gray-800/50 p-6">
+                            <div class="flex items-center gap-3 mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center">
+                                    <i class="fab fa-youtube text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">YouTube Movies</h3>
+                                    <p class="text-xs text-gray-500">Gratis con anuncios</p>
+                                </div>
+                            </div>
+                            <div class="space-y-3">
+                                <a href="https://www.youtube.com/feed/storefront?bp=ogUCKAI%3D" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="accion">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-red-400 w-6">1</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">El Encargo</p>
+                                            <p class="text-xs text-gray-500">Acción</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://www.youtube.com/feed/storefront?bp=ogUCKAI%3D" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="comedia">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-red-400 w-6">2</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Una familia peligrosa</p>
+                                            <p class="text-xs text-gray-500">Comedia, Acción</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://www.youtube.com/feed/storefront?bp=ogUCKAI%3D" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="accion">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-red-400 w-6">3</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">Stargate</p>
+                                            <p class="text-xs text-gray-500">Acción, Sci-Fi</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                                <a href="https://www.youtube.com/feed/storefront?bp=ogUCKAI%3D" target="_blank" class="movie-item flex items-center justify-between p-3 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all" data-category="terror">
+                                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                                        <span class="text-2xl font-bold text-red-400 w-6">4</span>
+                                        <div class="min-w-0">
+                                            <p class="font-semibold text-sm truncate">La Noche De Los Muertos</p>
+                                            <p class="text-xs text-gray-500">Terror, Clásico</p>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-xs text-gray-600"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Banner 728x90 entre secciones de categorías -->
+                <div class="py-8">
+                    <div class="ad-banner-728x90">
+                        <i class="fas fa-star text-2xl text-purple-400 opacity-60"></i>
+                        <div class="text-center">
+                            <p class="text-sm font-semibold text-gray-300">Tu anuncio aquí</p>
+                            <span class="text-xs text-gray-500">728x90 Banner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Section -->
+                <section class="py-12 sm:py-16">
+                    <div class="text-center max-w-3xl mx-auto">
+                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-600/10 border border-purple-500/20 mb-6">
+                            <i class="fas fa-shield-check text-purple-400"></i>
+                            <span class="text-sm text-purple-300">100% Legal y Gratis</span>
+                        </div>
+                        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                            Mirá películas gratis <span class="hero-gradient">sin piratería</span>
+                        </h2>
+                        <p class="text-lg sm:text-xl text-gray-400 mb-8 leading-relaxed">
+                            Descubrí las mejores plataformas de streaming legal donde podés ver películas y series gratis. Sin suscripciones, sin cuentas truchas, todo legal.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Platforms Grid por Categoría -->
+                <main id="plataformas" class="pb-12">
+                    <!-- Acción -->
+                    <section id="accion" class="mb-16">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center">
+                                <i class="fas fa-bomb text-white"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold">Acción</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-tv text-2xl text-black"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Pluto TV</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-red-500/20 text-red-300">Acción</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Canales de acción las 24hs y pelis on-demand. Desde clásicos de los 80 hasta blockbusters modernos.
+                                </p>
+                                <a href="https://pluto.tv" target="_blank" rel="noopener noreferrer" 
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg">
+                                        <i class="fab fa-youtube text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">YouTube Movies</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-red-500/20 text-red-300">Acción</span>
+                                    </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Pelis de acción completas gratis con publicidad. Mucho cine de artes marciales y thrillers.
+                                </p>
+                                <a href="https://www.youtube.com/feed/storefront?bp=ogUCKAI%3D" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Drama -->
+                    <section id="drama" class="mb-16">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                                <i class="fas fa-masks-theater text-white"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold">Drama</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-fire text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Tubi</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-blue-500/20 text-blue-300">Drama</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Catálogo enorme de dramas independientes y de Hollywood. Joyitas que no encontrás en Netflix.
+                                </p>
+                                <a href="https://tubitv.com" target="_blank" rel="noopener noreferrer" 
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-star text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">CINE.AR Play</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-sky-500/20 text-sky-300">Cine ARG</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    El mejor lugar para ver dramas argentinos. Premios Oscar, Goya y clásicos nacionales.
+                                </p>
+                                <a href="https://play.cine.ar" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Comedia -->
+                    <section id="comedia" class="mb-16">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center">
+                                <i class="fas fa-laugh text-white"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold">Comedia</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-fire text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Tubi</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-yellow-500/20 text-yellow-300">Comedia</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Comedias de todo tipo: románticas, absurdas, stand-up y clásicos de los 90. Para reirte sin parar.
+                                </p>
+                                <a href="https://tubitv.com" target="_blank" rel="noopener noreferrer" 
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-satellite-dish text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">RTVE Play</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-yellow-500/20 text-yellow-300">Comedia</span>
+                                    </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Las mejores comedias españolas. Humor negro, costumbrismo y las series cómicas más famosas.
+                                </p>
+                                <a href="https://www.rtve.es/play/" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Romance -->
+                    <section id="romance" class="mb-16">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                                <i class="fas fa-heart text-white"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold">Romance</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-fire text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Tubi</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-pink-500/20 text-pink-300">Romance</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Drames románticos premiados y comedias románticas. Call Me by Your Name, Big Fish y más.
+                                </p>
+                                <a href="https://tubitv.com" target="_blank" rel="noopener noreferrer" 
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-crown text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Rakuten TV Free</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-pink-500/20 text-pink-300">Romance</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Romances europeos y de Hollywood en HD. Mucho cine de época y historias de amor únicas.
+                                </p>
+                                <a href="https://www.rakuten.tv/es/gardens/free" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Terror -->
+                    <section id="terror" class="mb-16">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center">
+                                <i class="fas fa-ghost text-white"></i>
+                            </div>
+                            <h3 class="text-2xl sm:text-3xl font-bold">Terror</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-landmark text-2xl text-white"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Archive.org</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-gray-500/20 text-gray-300">Terror Clásico</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Clásicos del terror de dominio público. La noche de los muertos vivientes, Nosferatu y más.
+                                </p>
+                                <a href="https://archive.org/details/movies" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+
+                            <article class="card-gradient card-hover rounded-2xl border border-gray-800/50 p-6 flex flex-col">
+                                <div class="flex items-start gap-4 mb-4">
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
+                                        <i class="fas fa-tv text-2xl text-black"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-xl font-bold mb-1">Pluto TV</h4>
+                                        <span class="px-2 py-0.5 text-xs rounded-md bg-gray-500/20 text-gray-300">Terror</span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">
+                                    Canal de terror las 24hs y películas on-demand. Slashers, paranormal y terror psicológico.
+                                </p>
+                                <a href="https://pluto.tv" target="_blank" rel="noopener noreferrer"
+                                   class="btn-glow w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30">
+                                    <span>Ver ahora</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </a>
+                            </article>
+                        </div>
+                    </section>
+                </main>
+
+                <!-- Info Section -->
+                <section class="pb-16">
+                    <div class="card-gradient rounded-2xl border border-gray-800/50 p-8 sm:p-10">
+                        <div class="flex flex-col md:flex-row items-start gap-6">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center">
+                                    <i class="fas fa-shield-halved text-2xl text-green-400"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-bold mb-3">¿Por qué son legales?</h3>
+                                <p class="text-gray-400 leading-relaxed mb-4">
+                                    Todas estas plataformas tienen licencias oficiales para distribuir su contenido. Se financian con publicidad o fondos públicos, por eso no necesitás pagar ni usar cuentas truchas. Es 100% legal y seguro.
+                                </p>
+                                <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-circle-check text-green-500 mt-0.5"></i>
+                                        <span class="text-gray-300">Sin virus ni malware</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-circle-check text-green-500 mt-0.5"></i>
+                                        <span class="text-gray-300">Sin bajar nada ilegal</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-circle-check text-green-500 mt-0.5"></i>
+                                        <span class="text-gray-300">Calidad HD/4K disponible</span>
+                                    </div>
+                                    <div class="flex items-start gap-2">
+                                        <i class="fas fa-circle-check text-green-500 mt-0.5"></i>
+                                        <span class="text-gray-300">Funciona en Smart TV y celu</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Sidebar derecha: Banner 300x250 -->
+            <div class="hidden lg:block w-[320px] flex-shrink-0">
+                <div class="sticky top-24">
+                    <div class="ad-banner-300x250 mb-6">
+                        <i class="fas fa-image text-3xl text-purple-400 opacity-60"></i>
+                        <div class="text-center">
+                            <p class="text-base font-semibold text-gray-300">Tu anuncio aquí</p>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider">300x250 Banner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skyscraper 300x600 sticky solo desktop a la derecha -->
+    <div class="hidden xl:block fixed right-4 top-24 z-40">
+        <div class="ad-skyscraper-300x600">
+            <i class="fas fa-image text-4xl text-purple-400 opacity-60"></i>
+            <div class="text-center">
+                <p class="text-lg font-bold text-gray-300 mb-2">Tu anuncio aquí</p>
+                <p class="text-sm text-gray-400 mb-4">Espacio premium</p>
+                <span class="text-xs text-gray-500 uppercase tracking-wider">300x600 Skyscraper</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/50 bg-black/40 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-film text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold">Cine Gratis Legal</span>
+                </div>
+                <p class="text-gray-400 mb-6">
+                    Todas estas plataformas son 100% legales y gratuitas
+                </p>
+                <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+                    <span>Hecho con ❤️ en Argentina</span>
+                    <span class="hidden sm:inline">•</span>
+                    <span>Actualizado 2025</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Overlay publicitario de entrada - solo 1 vez por sesión
+        (function() {
+            const overlay = document.getElementById('entryAdOverlay');
+            const closeBtn = document.getElementById('entryAdClose');
+            const STORAGE_KEY = 'entryAdShown';
+
+            if (!sessionStorage.getItem(STORAGE_KEY)) {
+                setTimeout(() => {
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.add('show'), 10);
+                }, 500);
+
+                sessionStorage.setItem(STORAGE_KEY, 'true');
+            }
+
+            function closeAd() {
+                overlay.classList.remove('show');
+                overlay.classList.add('hide');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+
+            closeBtn.addEventListener('click', closeAd);
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeAd();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !overlay.classList.contains('hidden')) {
+                    closeAd();
+                }
+            });
+        })();
+
+        // Smooth scroll para los links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animación de entrada para las cards
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('article').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+
+        // Sistema de filtros para sección Tendencias
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const movieItems = document.querySelectorAll('.movie-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                movieItems.forEach(item => {
+                    if (filter === 'all') {
+                        item.classList.remove('hidden');
+                    } else {
+                        const categories = item.dataset.category.split(' ');
+                        if (categories.includes(filter)) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){document.addEventListener("click",function(e){var a=e.target.closest("[data-product-id]");if(!a)return;e.preventDefault();var pid=a.getAttribute("data-product-id");if(pid)parent.postMessage({type:"ecto-artifact-link-click",productId:pid},"*")})})();</script>
+</body>
+</html>
